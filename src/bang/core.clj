@@ -1,26 +1,26 @@
-(ns bang.core
-  (:require [clojure.string :refer [join]]))
+(ns bang.core)
 
 (def player \|)
 (def space \space)
 
-(defn read-board [raw-board]
-  (vec raw-board))
+(def parse vec)
+(def dump clojure.string/join)
 
-(defn write-board [vecboard]
-  (join vecboard))
-
-(defn move-player-right [board]
+(defn move-player-x [board direction-fn]
   (let [position (.indexOf board player)]
     (assoc board
       position space
-      (inc position) player)))
+      (direction-fn position) player)))
 
 (defn next-game-state
   [raw-board input]
-  (if (= input ["R"])
-    (-> raw-board
-        read-board
-        move-player-right
-        write-board)
-    raw-board))
+  (cond
+   (= input ["R"]) (-> raw-board
+                       parse
+                       (move-player-x inc)
+                       dump)
+   (= input ["L"]) (-> raw-board
+                       parse
+                       (move-player-x dec)
+                       dump)
+   :else raw-board))
