@@ -16,4 +16,8 @@
   (testing "player movement wraps on left side"
     (is (= (some-game-state "      |")
            (next-game-state "|      "
-                            ["L"])))))
+                            ["L"]))))
+  (testing "player movement wraps on right side"
+    (is (= (some-game-state "|      ")
+           (next-game-state "      |"
+                            ["R"])))))
