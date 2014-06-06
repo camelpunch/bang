@@ -6,11 +6,17 @@
 (def parse vec)
 (def dump clojure.string/join)
 
-(defn move-player-x [board direction-fn]
-  (let [position (.indexOf board player)]
+(defn move-player-x [board move]
+  (let [old-position (.indexOf board player)
+        proposed-position (move old-position)
+        new-position (cond
+                      (= proposed-position -1) (dec (count board))
+                      (>= proposed-position (count board)) 0
+                      :else proposed-position
+                      )]
     (assoc board
-      position space
-      (direction-fn position) player)))
+      old-position space
+      new-position player)))
 
 (defn next-game-state
   [raw-board input]
