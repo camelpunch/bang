@@ -21,11 +21,11 @@
 (defn next-game-state
   [raw-board input]
   (cond
-   (= input ["R"]) (-> raw-board
+   (= input "R") (-> raw-board
                        parse
                        (move-player-x inc)
                        dump)
-   (= input ["L"]) (-> raw-board
+   (= input "L") (-> raw-board
                        parse
                        (move-player-x dec)
                        dump)

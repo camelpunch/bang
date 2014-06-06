@@ -7,8 +7,8 @@
 
 (defn char-to-input [char]
   (cond
-   (= char 68) ["L"]
-   (= char 67) ["R"]
+   (= char 68) "L"
+   (= char 67) "R"
    :else nil))
 
 (defn show-game [game-state]
