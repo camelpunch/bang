@@ -1,3 +1,0 @@
-(ns com.camelpunch.bang)
-
-
