@@ -1,7 +1,8 @@
 (ns com.camelpunch.bang.screen
   (:require [com.camelpunch.bang.plottable :refer :all]
             [lanterna.screen :as s]
-            [com.stuartsierra.component :as component]))
+            [com.stuartsierra.component :as component]
+            [clojure.core.async :refer [go go-loop chan <! >!]]))
 
 (def actions
   {:text (fn [lscreen text coords]
@@ -12,13 +13,23 @@
 
   (start [component]
     (println "Starting screen")
-    (let [lscreen (s/get-screen :swing)]
-      (s/start lscreen)
-      (assoc component :lscreen lscreen)))
+    (let [scr (s/get-screen :swing)
+          keychan (chan)]
+      (s/start scr)
+
+      (go-loop []
+               (println "got key:" (<! keychan))
+               (recur))
+
+      (go-loop []
+               (>! keychan (s/get-key-blocking scr))
+               (recur))
+
+      (assoc component :scr scr)))
 
   (stop [component]
     (println "Stopping screen")
-    (s/stop (:lscreen component))
+    (s/stop (:scr component))
     component)
 
   Plottable
@@ -27,5 +38,5 @@
     (doseq [item items]
       (let [k (first item)]
         (apply (k actions)
-               (concat [(:lscreen screen)] (rest item)))))
-    (s/redraw (:lscreen screen))))
+               (concat [(:scr screen)] (rest item)))))
+    (s/redraw (:scr screen))))
