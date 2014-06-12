@@ -3,6 +3,10 @@
             [lanterna.screen :as s]
             [com.stuartsierra.component :as component]))
 
+(def actions
+  {:text (fn [lscreen text coords]
+           (s/put-string lscreen (first coords) (second coords) text))})
+
 (defrecord Screen []
   component/Lifecycle
 
@@ -19,8 +23,9 @@
 
   Plottable
 
-  (plot-text [screen x y text]
-    (s/put-string (:lscreen screen) x y text))
-
-  (update [screen]
+  (update [screen items]
+    (doseq [item items]
+      (let [k (first item)]
+        (apply (k actions)
+               (concat [(:lscreen screen)] (rest item)))))
     (s/redraw (:lscreen screen))))

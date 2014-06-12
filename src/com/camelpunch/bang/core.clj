@@ -8,8 +8,8 @@
   (start [component]
     (println "Starting game")
     (let [screen (:screen component)]
-      (plot-text screen 10 5 "Hello, world!")
-      (update screen))
+      (update screen
+              [[:text "Hello, world!" [10 5]]]))
     component)
 
   (stop [component]
