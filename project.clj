@@ -8,4 +8,5 @@
   :profiles {:uberjar {:aot :all
                        :main bang.console}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.4"]]
+                   :plugins [[cider/cider-nrepl "0.7.0"]]
                    :source-paths ["dev"]}})
