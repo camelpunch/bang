@@ -9,12 +9,11 @@
   (mod (inc old-position) (count row)))
 
 (defn move-right-in-row [row]
-  (let [old-position (.indexOf row player)]
-    (if (= old-position -1)
-      row
-      (assoc row
-        old-position space
-        (new-position row old-position) player))))
+  (let [n (count row)]
+    (->> row
+         cycle
+         (drop (dec n))
+         (take n))))
 
 (defn move-right [board]
   (->> board (map vec) (map move-right-in-row)))
