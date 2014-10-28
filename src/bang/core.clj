@@ -1,13 +1,5 @@
 (ns bang.core)
 
-(def player \|)
-(def space \space)
-
-(def dump (partial map clojure.string/join))
-
-(defn new-position [row old-position]
-  (mod (inc old-position) (count row)))
-
 (defn move-left-in-row [row]
   (let [n (count row)]
     (->> row
@@ -22,7 +14,8 @@
   (->> board (map reverse) move-left (map reverse)))
 
 (defn next-game-state [board input]
-  (dump (cond
-         (= input "R") (move-right board)
-         (= input "L") (move-left board)
-         :else board)))
+  (map clojure.string/join
+       (cond
+        (= input "R") (move-right board)
+        (= input "L") (move-left board)
+        :else board)))
