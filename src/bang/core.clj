@@ -3,30 +3,28 @@
 (def player \|)
 (def space \space)
 
-(def parse vec)
-(def dump clojure.string/join)
+(def parse (partial map vec))
+(def dump (partial map clojure.string/join))
 
-(defn move-player-x [board move]
-  (let [old-position (.indexOf board player)
-        proposed-position (move old-position)
-        new-position (cond
-                      (= proposed-position -1) (dec (count board))
-                      (>= proposed-position (count board)) 0
-                      :else proposed-position
-                      )]
-    (assoc board
-      old-position space
-      new-position player)))
+(defn move-x-in-row [row move]
+  (let [old-position (.indexOf row player)]
+    (if (= old-position -1)
+      row
+      (let [proposed-position (move old-position)
+            new-position (cond
+                          (= proposed-position -1) (dec (count row))
+                          (>= proposed-position (count row)) 0
+                          :else proposed-position
+                          )]
+        (assoc row
+          old-position space
+          new-position player)))))
 
-(defn next-game-state
-  [raw-board input]
+(defn move-x [board move]
+  (map (fn [row] (move-x-in-row row move)) board))
+
+(defn next-game-state [raw-board input]
   (cond
-   (= input "R") (-> raw-board
-                       parse
-                       (move-player-x inc)
-                       dump)
-   (= input "L") (-> raw-board
-                       parse
-                       (move-player-x dec)
-                       dump)
+   (= input "R") (dump (move-x (parse raw-board) inc))
+   (= input "L") (dump (move-x (parse raw-board) dec))
    :else raw-board))
