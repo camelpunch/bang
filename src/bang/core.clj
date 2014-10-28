@@ -8,18 +8,18 @@
 (defn new-position [row old-position]
   (mod (inc old-position) (count row)))
 
-(defn move-right-in-row [row]
+(defn move-left-in-row [row]
   (let [n (count row)]
     (->> row
          cycle
-         (drop (dec n))
+         (drop 1)
          (take n))))
 
-(defn move-right [board]
-  (->> board (map vec) (map move-right-in-row)))
-
 (defn move-left [board]
-  (->> board (map reverse) move-right (map reverse)))
+  (->> board (map vec) (map move-left-in-row)))
+
+(defn move-right [board]
+  (->> board (map reverse) move-left (map reverse)))
 
 (defn next-game-state [board input]
   (dump (cond
