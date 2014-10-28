@@ -15,6 +15,22 @@
     (is (= ["|  "]
            (next-game-state [" | "]
                             "L"))))
+  (testing "player moves up when input is U"
+    (is (= [" |  "
+            "    "
+            "    "]
+           (next-game-state ["    "
+                             " |  "
+                             "    "]
+                            "U"))))
+  (testing "player moves down when input is D"
+    (is (= ["     "
+            "     "
+            "    |"]
+           (next-game-state ["     "
+                             "    |"
+                             "     "]
+                            "D"))))
   (testing "player movement wraps on left side"
     (is (= ["      |"]
            (next-game-state ["|      "]
