@@ -5,8 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [jline "1.0"]]
-  :profiles {:uberjar {:aot :all
-                       :main bang.console}
+  :main bang.console
+  :profiles {:uberjar {:aot :all}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.4"]]
                    :plugins [[cider/cider-nrepl "0.7.0"]]
                    :source-paths ["dev"]}})
